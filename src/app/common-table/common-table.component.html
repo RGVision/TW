@@ -1,0 +1,60 @@
+
+<div class="container">
+    <!-- <button class="bg-blue-500 hover:bg-sky-700" (click)="toggleFilter()">{{buttonName}}</button> -->
+    <button class="mt-10 flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-2 py-1 mb-2 font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" (click)="toggleFilter()">{{buttonName}}</button>
+    <table class="border-collapse border border-slate-500">
+        <thead >
+            @if (isFilter) {
+                <tr>
+                    @for (headers of columnDefs; track $index) {
+                        <th class="border border-slate-600"><a (click)="getsorting(headers)">{{headers.Name}}</a>
+                            <span>
+                                <input  id="searchbox" type="text" class="grid-search-textbox min-w-full" (keyup)="getsearchfilter($event)"
+                                  [(ngModel)]="GridFilter[headers.Field]"  [ngModelOptions]="{standalone: true}">
+                              </span></th>
+                        
+                    }
+                    
+                  </tr>
+              }@else {
+                <tr >
+                    @for (headers of columnDefs; track $index) {
+                        <th class="border border-slate-600"><a (click)="getsorting(headers)" [hidden]="isFilter">{{headers.Name}}</a></th>
+                    }
+                  </tr>
+              }
+        </thead>
+        <tbody>
+            @for (row of gridData |  paginate: { itemsPerPage: itemsPerPages, currentPage: page }; track $index) {
+                <tr>
+                    @for (col of columnDefs ; track $index) {
+                        <td class="border border-slate-700 ">
+                            
+                            @if (col.DataType=="Date") {
+                                {{row[col.Field] | date}}
+                            }
+                            
+                            @else {
+                            {{row[col.Field]}}
+                            }
+                        </td>
+                    }
+                </tr>
+                
+               }
+        </tbody>
+    </table>
+</div>
+<div>
+    <pagination-controls (pageChange)="pagechange($event)"></pagination-controls>
+    <label id="page-selection">Items per page:
+      <select [(ngModel)]="itemsPerPages">
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="50">50</option>
+      </select>
+    </label>
+  </div>
+    
+      

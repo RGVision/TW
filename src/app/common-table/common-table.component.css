@@ -1,0 +1,10 @@
+/* input#searchbox{
+    width: 100%;
+    border: 1px solid black;
+} */
+th:hover{
+    cursor: pointer;
+}
+label#page-selection{
+    float: right;
+}

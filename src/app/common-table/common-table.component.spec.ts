@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AppComponent } from './app.component';
+import { CommonTableComponent } from './common-table.component';
 
-describe('AppComponent', () => {
-  let component: AppComponent;
-  let fixture: ComponentFixture<AppComponent>;
+describe('CommonTableComponent', () => {
+  let component: CommonTableComponent;
+  let fixture: ComponentFixture<CommonTableComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppComponent]
+      imports: [CommonTableComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(AppComponent);
+    fixture = TestBed.createComponent(CommonTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

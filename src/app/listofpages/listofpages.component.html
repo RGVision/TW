@@ -1,0 +1,15 @@
+<p>listofpages works!</p>
+<button id="gridview" class="rounded-md border border-transparent bg-indigo-600 px-2 py-1 mr-1 mb-2 font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"  (click)="changetable()"><i class="fa fa-table"></i></button>
+<button id="listview" class="rounded-md border border-transparent bg-indigo-600 px-2 py-1  mr-1 mb-2 font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" (click)="changelist()"><i class="fa fa-list"></i></button>
+<button id="gridview" class="rounded-md border border-transparent bg-indigo-600 px-2 py-1  mr-1 mb-2 font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"  (click)="changecard()"><i class="fa fa-address-card"></i></button>
+
+@switch (datatype) {
+    @case (DataTypes.table) {
+        <div class="row">
+            <h1>Grid 1</h1>
+            <div class="col-span-full">
+                <app-common-table [columnDefs]="columnDefs" [gridData]="gridData"  ></app-common-table>
+            </div>
+        </div>
+    }
+}

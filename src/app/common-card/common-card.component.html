@@ -1,0 +1,40 @@
+<div id="commoncard">
+    <!-- <button type="button"
+    class="btn btn-primary"
+    (click)="toggleFilter()">
+    {{buttonName}}</button> -->
+    <ul class="flex">
+                @for (row of gridData |  paginate: { itemsPerPage: itemsPerPages, currentPage: page }; track $index) {
+                  <div class="card">
+                    <div class="mx-3 shadow-slate-300 shadow-md drop-shadow-md rounded-md">
+                      <img src="../../assets/images/Treetog-Junior-Camera.48.png">
+                    @for (col of columnDefs ; track $index) {
+                      <span class="card-body" id="span-ca">
+                        <div class="card-text">
+                          <div class="px-3 flex">
+                            {{row[col.Field]}}
+                          </div>
+                        </div>
+                        
+                      </span>
+                    }
+                    </div>
+                    
+                  </div>
+                  
+                }
+    </ul>
+    <br>
+      <div>
+        <pagination-controls (pageChange)="pagechange($event)"></pagination-controls>
+        <label id="page-selection">Items per page:
+          <select [(ngModel)]="itemsPerPages" class="border border-gray-500 rounded">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+          </select>
+        </label>
+      </div>
+</div>
+

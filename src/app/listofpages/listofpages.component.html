@@ -1,14 +1,16 @@
 <div class="container ml-3">
     <button id="gridview" class="mt-5 rounded-md border bg-indigo-600 px-2 py-1 mr-3 mb-2 font-medium text-white hover:bg-indigo-700"  (click)="changetable()"><i class="fa fa-table"></i></button>
     <button id="listview" class="mt-5 rounded-md border bg-indigo-600 px-2 py-1  mr-3 mb-2 font-medium text-white hover:bg-indigo-700" (click)="changelist()"><i class="fa fa-list"></i></button>
-    <button id="gridview" class="mt-5 rounded-md border bg-indigo-600 px-2 py-1  mr-3 mb-2 font-medium text-white hover:bg-indigo-700"  (click)="changecard()"><i class="fa fa-address-card"></i></button>
-    
+    <button id="cardview" class="mt-5 rounded-md border bg-indigo-600 px-2 py-1  mr-3 mb-2 font-medium text-white hover:bg-indigo-700"  (click)="changecard()"><i class="fa fa-address-card"></i></button>
+    <button id="bootstrap" class="mt-5 rounded-md border bg-indigo-600 px-2 py-1  mr-3 mb-2 font-medium text-white hover:bg-indigo-700"  (click)="changebootstrap()"><i class="fa fa-book"></i></button>
+
     @switch (datatype) {
         @case (DataTypes.table) {
             <div class="row">
                 <span class="text-2xl font-semibold">Grid View</span>
                 <div class="col-span-full">
                     <app-common-table [columnDefs]="columnDefs" [gridData]="gridData"  ></app-common-table>
+                   
                 </div>
             </div>
         }
@@ -28,5 +30,14 @@
                 </div>
             </div>
         }
+        @case (DataTypes.bootstrap) {
+            <div class="row">
+                <span class="text-2xl font-semibold">Bootstrap</span>
+                <div class="col-lg-8">
+                    <app-bootstrap [columnDefs]="columnDefs" [gridData]="gridData"  ></app-bootstrap>
+                </div>
+            </div>
+        }
     }
 </div>
+

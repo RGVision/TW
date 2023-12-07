@@ -5,19 +5,21 @@
     {{buttonName}}</button> -->
     <ul class="flex">
                 @for (row of gridData |  paginate: { itemsPerPage: itemsPerPages, currentPage: page }; track $index) {
-                  <div class="card">
-                    <div class="mx-3 shadow-slate-300 shadow-md drop-shadow-md rounded-md">
+                  <div class="card border-none">
+                    <div class="mx-3 shadow-slate-300 shadow-md drop-shadow-md rounded-md hover:animate-pulse">
                       <img src="../../assets/images/Treetog-Junior-Camera.48.png">
-                    @for (col of columnDefs ; track $index) {
                       <span class="card-body" id="span-ca">
+                    @for (col of columnDefs ; track $index) {
+                      
                         <div class="card-text">
                           <div class="px-3 flex">
                             {{row[col.Field]}}
                           </div>
                         </div>
                         
-                      </span>
+                      
                     }
+                    </span>
                     </div>
                     
                   </div>

@@ -1,0 +1,9 @@
+th:hover{
+    cursor: pointer;
+}
+label#page-selection{
+    float: right;
+}
+td{
+    text-align: center;
+}

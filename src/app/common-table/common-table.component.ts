@@ -38,6 +38,10 @@ export class CommonTableComponent {
       } else {
         alert('Different Value')
       }
+    // } else if (OldData === null && localdata === null) {
+    //   alert('Both items are not present in local storage.');
+    // } else {
+    //   alert('One of the items is not present in local storage.');
     }
    }
 

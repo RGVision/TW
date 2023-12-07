@@ -1,0 +1,15 @@
+<div class="container ml-2">
+@for (Record of gridData; track $index) {
+    <!-- @if(Record.EntityTypeId == ''){
+        <h1>data</h1>
+    } -->
+    <!-- {{Record.EntityTypeId}} -->
+    @if(Record.EntityTypeId){
+        {{Record.CaseId}}
+    }
+   
+}
+</div>
+
+
+

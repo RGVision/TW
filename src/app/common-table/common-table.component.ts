@@ -5,7 +5,6 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { IActionDef, I_ColumnDef, I_Data, IsHideButton } from '../Column-Def/IColumnDef';
 import { E_ActionType, E_SelectMode, E_datatype } from '../Enum/enum';
 import { AppService } from '../app.service';
-import { BulkViewComponent } from '../bulk-view/bulk-view.component';
 @Component({
   selector: 'app-common-table',
   standalone: true,
@@ -60,7 +59,6 @@ export class CommonTableComponent {
   datatype:E_datatype = E_datatype.table;
   selectMode: E_SelectMode = E_SelectMode.Multi;
   @Input() gridActionList: IActionDef[] = [];
-  @Input() record = BulkViewComponent;
   @Input() Create: E_ActionType = 1;
   @Input() Edit: E_ActionType = 2;
   @Input() Delete: E_ActionType = 3;

@@ -52,9 +52,14 @@ datatype:E_datatype = E_datatype.list;
     console.log('Create')
   }
 
-  Action_Delete($event:any){
+  Action_Delete(row:I_ColumnDef){
     this.isDelete = this.IsHidden.Delete;
-    console.log('Delete')
+    const index = this.gridData.indexOf(row);
+    if (index !== -1) {
+      this.gridData.splice(index, 1);
+      localStorage.setItem('localdata', JSON.stringify(this.gridData));
+      console.log('Single data deleted :', row);
+    }
   }
   removeCreateDelete(){
     this.IsHidden.Create=true;

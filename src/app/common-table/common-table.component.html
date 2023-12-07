@@ -6,6 +6,7 @@
     <button class="ml-2 rounded-md  bg-emerald-600 hover:bg-emerald-800 px-1 py-1 text-white transition ease-in-out delay-75 hover:-translate-y-1 hover:scale-110 duration-150" (click)="BulkEdit()">Bulk Edit</button>
     @if (isBulkEdit) {
       <button class=" ml-2 bg-blue-500  rounded-md hover:bg-blue-800 px-1 py-1 text-white transition ease-in-out delay-75 hover:-translate-y-1 hover:scale-110 duration-150" (click)="onSubmit()">Save</button>
+      
       <button class=" ml-2 bg-orange-500  rounded-md hover:bg-orange-800 px-1 py-1 text-black transition ease-in-out delay-75 hover:-translate-y-1 hover:scale-110 duration-150" type="button" data-bs-toggle="modal" data-bs-target="#myModal" (click)="bulkview()" >List</button>
 
     }
@@ -101,7 +102,7 @@
                   @for (col of columnDefs ; track $index) {
                       <td class="border border-slate-400 p-2 text-center  hover:bg-slate-200">
 
-                          <input  type="text"  class="form-control" name="Field" [(ngModel)]="row[col.Field]" [ngModelOptions]="{standalone:true}" />
+                          <input  type="text"  class="form-control" name="Field" [(ngModel)]="row[col.Field]" [ngModelOptions]="{standalone:true}" (keyup)="Inputchange($event)" />
                         
                           
                       </td>
@@ -110,13 +111,13 @@
                   <td class="border border-slate-400 p-2 text-center  hover:bg-slate-200">
                      
 
-                  @if (IsHidden.Delete==false) {
-                      <span class="px-1 cursor-pointer" (click)="Action_Delete($event)"><i class="fa fa-trash-o"></i></span>
-                  }@else if (IsHidden.Delete==true) {}
+                  
+                      <span class="px-1 cursor-pointer" (click)="deleteAdata(row)"><i class="fa fa-trash-o"></i></span>
+                 
 
                   </td>
               </tr>
-            }             
+            }
             }
           @else{
             @for (row of gridData |  paginate: { itemsPerPage: itemsPerPages, currentPage: page }; track $index) {
@@ -145,9 +146,9 @@
                   }
                   <td class="border border-slate-400 p-2 text-center  hover:bg-slate-200">
                     
-                  @if (IsHidden.Delete==false) {
-                      <span class="px-1 cursor-pointer" (click)="Action_Delete($event)"><i class="fa fa-trash-o"></i></span>
-                  }@else if (IsHidden.Delete==true) {}
+                  
+                  <span class="px-1 cursor-pointer" (click)="deleteAdata(row)"><i class="fa fa-trash-o"></i></span>
+                  
 
                   </td>
              }

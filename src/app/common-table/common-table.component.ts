@@ -16,6 +16,9 @@ import { BulkViewComponent } from '../bulk-view/bulk-view.component';
 export class CommonTableComponent {
   data: FormGroup;
   datas: I_ColumnDef[] = [];
+
+
+
   
   constructor(private appService: AppService) {
    
@@ -35,10 +38,6 @@ export class CommonTableComponent {
       } else {
         alert('Different Value')
       }
-    } else if (OldData === null && localdata === null) {
-      alert('Both items are not present in local storage.');
-    } else {
-      alert('One of the items is not present in local storage.');
     }
    }
 
@@ -47,6 +46,9 @@ export class CommonTableComponent {
     if(this.gridData.length > 0){
       this.tempGridData = this.gridData;
     }
+    const localdatas = this.data.value;
+    this.appService.saveGridData(localdatas);
+   this.data.reset();
     
   }
 
@@ -117,15 +119,18 @@ toggleFilter(){
     this.buttonName = 'Open Filter'
     }
 }
-Action_Create($event:any){
-  console.log('Create')
-}
-Action_Edit($event:any){
-  console.log('Edit')
-}
-Action_Delete($event:any){
-  console.log('Delete')
-}
+// Action_Create($event:any){
+//   console.log('Create')
+// }
+// Action_Edit($event:any){
+//   console.log('Edit')
+// }
+
+// Action_Delete($event:any){
+//       console.log('delete')
+// }
+  
+
 // removeCreateEdit(){
 //   this.IsHidden.Create=true;
 //   this.IsHidden.Edit=true;
@@ -217,9 +222,7 @@ BulkEdit() {debugger
       model.EntityTypeId='';
       this.gridData.push(model);
       }
-      const localdatas = this.data.value;
-      this.appService.saveGridData(localdatas);
-     this.data.reset();
+
       
   }
 
@@ -302,5 +305,22 @@ changeBulkEditData($event: any) {
 
 }
 
+Inputchange($event:any){
+  let lastobject=this.gridData[this.gridData.length - 1];
+  if (lastobject && lastobject.EntityTypeId !== ''){
+    let model: I_Data = Object.assign({});
+    model.EntityTypeId='';
+    this.gridData.push(model);
+}
+  }
+  deleteAdata(row:I_ColumnDef) {debugger
+    
+    const index = this.gridData.indexOf(row);
+    if (index !== -1) {
+      this.gridData.splice(index, 1);
+      localStorage.setItem('localdata', JSON.stringify(this.gridData));
+      console.log('Single data deleted :', row);
+    }
+  }
 }
 

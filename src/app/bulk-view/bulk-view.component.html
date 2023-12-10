@@ -1,14 +1,130 @@
-<div class="container ml-2">
-@for (Record of gridData; track $index) {
-    <!-- @if(Record.EntityTypeId == ''){
-        <h1>data</h1>
-    } -->
-    <!-- {{Record.EntityTypeId}} -->
-    @if(Record.EntityTypeId){
-        {{Record.CaseId}}
+
+  <button class="ml-2 items-center justify-center rounded-md px-2 py-1 mb-2 font-medium text-white bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 " (click)="toggleFilter()">{{buttonName}}</button>
+<!-- <button class="ml-2 rounded-md  bg-red-600 hover:bg-red-800 px-1 py-1 text-white transition ease-in-out delay-75 hover:-translate-y-1 hover:scale-110 duration-150" (click)="removeCreateEdit()">Remove</button> -->
+<!-- <button class="ml-2 rounded-md  bg-emerald-600 hover:bg-emerald-800 px-1 py-1 text-white transition ease-in-out delay-75 hover:-translate-y-1 hover:scale-110 duration-150" (click)="BulkEdit()">Bulk Edit</button> -->
+  <button class=" ml-2 bg-blue-500  rounded-md hover:bg-blue-800 px-2 py-1 font-medium text-white transition ease-in-out delay-75 hover:-translate-y-1 hover:scale-110 duration-150" (click)="onSubmit()">Save</button>
+  
+  <button class=" ml-2 bg-orange-500  rounded-md hover:bg-orange-800 px-2 py-1 font-medium text-black transition ease-in-out delay-75 hover:-translate-y-1 hover:scale-110 duration-150" type="button" data-bs-toggle="modal" data-bs-target="#myModal" (click)="bulkview()" >List</button>
+<table  class="border-collapse border border-slate-500 bg-slate-50">
+  <caption class="caption-top">Caption: Table View</caption>
+  <thead>
+    @if (isFilter) {
+      <tr>
+        <th class="fancy-checkbox">
+          <label class="fancy-checkbox">
+            <input class="select-all" type="checkbox" name="checkbox" [(ngModel)]="GridCheckAll" [ngModelOptions]="{standalone: true}"
+              (change)="getGridCheckAll($event)">
+            <span></span>
+          </label>
+        </th>
+        @for (headers of columnDefs; track $index) {
+            <th class="border border-slate-400 p-2 text-center  hover:bg-slate-200 hover:cursor-pointer" ><a (click)="getsorting(headers)">{{headers.Name}}</a>
+                <div>
+                    <input  id="searchbox" type="text" class="grid-search-textbox  border border-black border-opacity-40 rounded" (keyup)="getsearchfilter($event)"
+                      [(ngModel)]="GridFilter[headers.Field]"  [ngModelOptions]="{standalone: true} ">
+                  </div></th>
+        }
+        @if (isEdit||isCreate||isDelete) {
+            <th  class="border border-slate-400 p-2 text-center  hover:bg-slate-200 hover:cursor-pointer" [ngClass]="{'hidden': ((isEdit && IsHidden.Edit) && (isDelete && IsHidden.Delete) && (isCreate && IsHidden.Create))|| (IsHidden.All)}">{{"Action"}}</th>
+        }
+      </tr>
+      }@else {
+        <tr>
+          <th class="fancy-checkbox">
+            <label class="fancy-checkbox">
+              <input class="select-all" type="checkbox" name="checkbox" [(ngModel)]="GridCheckAll" [ngModelOptions]="{standalone: true}"
+                (change)="getGridCheckAll($event)">
+              <span></span>
+            </label>
+          </th>
+          @for (headers of columnDefs; track $index) {
+              <th class="border border-slate-400 p-2 text-center  hover:bg-slate-200 hover:cursor-pointer" ><a (click)="getsorting(headers)">{{headers.Name}}</a>
+                  </th>
+          }
+          @if (isEdit||isCreate||isDelete) {
+              <th  class="border border-slate-400 p-2 text-center  hover:bg-slate-200 hover:cursor-pointer" [ngClass]="{'hidden': ((isEdit && IsHidden.Edit) && (isDelete && IsHidden.Delete) && (isCreate && IsHidden.Create))|| (IsHidden.All)}">{{"Action"}}</th>
+          }
+        </tr>
+      }
+  </thead>
+  <tbody>
+    @for (row of gridData |  paginate: { itemsPerPage: itemsPerPages, currentPage: page }; track $index) {
+      <tr>
+        <td class="width45">
+          <label class="fancy-checkbox">
+            <input id="table_row_checkbox_{{$index}}" class="checkbox-tick" type="checkbox" name="checkbox" [(ngModel)]="row.isGridSelect" [ngModelOptions]="{standalone: true}"
+              (change)="getCheckboxCheckedRules($event,$index,row)">
+            <span></span>
+          </label>
+        </td>
+          @for (col of columnDefs ; track $index) {
+              <td class="border border-slate-400 p-2 text-center  hover:bg-slate-200">
+
+                  <input  type="text"  class="form-control" name="Field" [(ngModel)]="row[col.Field]" [ngModelOptions]="{standalone:true}" (keyup)="Inputchange($event)" />
+                
+                  
+              </td>
+             
+          }
+          <td class="border border-slate-400 p-2 text-center  hover:bg-slate-200">
+             
+
+          
+              <span class="px-1 cursor-pointer" (click)="deleteAdata(row)"><i class="fa fa-trash-o"></i></span>
+         
+
+          </td>
+      </tr>
     }
-   
-}
+  </tbody>
+</table>
+
+        <div>
+            <pagination-controls (pageChange)="pagechange($event)"></pagination-controls>
+            <label id="page-selection">Items per page:
+              <select [(ngModel)]="itemsPerPages" class="border border-gray-500 rounded">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+              </select>
+            </label>
+          </div>
+
+
+
+
+
+<div class="modal" id="myModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+     
+      <div class="modal-header">
+        <h4 class="modal-title">List</h4>
+        <div>
+        <!-- <button class=" mr-2 bg-blue-500  rounded-md hover:bg-blue-800 px-1 py-1 text-white transition ease-in-out delay-75 hover:-translate-y-1 hover:scale-110 duration-150" (click)="onSubmit()"  data-bs-dismiss="modal">Save</button> -->
+        <button type="button" class="btn btn-danger bg-red-600" data-bs-dismiss="modal" >X</button>
+        </div>
+        
+
+      </div>
+
+     
+      <div class="modal-body">
+       
+              <textarea id="textarea" row="10" class="form-control border-none outline-none  shadow-none h-80" [(ngModel)]="BulkEditData"  [ngModelOptions]="{standalone:true}" (keyup)="changeBulkEditData($event)"  >
+              
+              </textarea>
+      </div>
+
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger bg-red-600" data-bs-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
 </div>
 
 

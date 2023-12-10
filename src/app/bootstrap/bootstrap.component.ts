@@ -5,11 +5,11 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { I_ColumnDef, IsHideButton } from '../Column-Def/IColumnDef';
 import { E_datatype } from '../Enum/enum';
 @Component({
-  selector: 'app-bootstrap',
-  standalone: true,
-  imports: [CommonModule , FormsModule,NgxPaginationModule],
-  templateUrl: './bootstrap.component.html',
-  styleUrl: './bootstrap.component.css'
+    selector: 'app-bootstrap',
+    standalone: true,
+    templateUrl: './bootstrap.component.html',
+    styleUrl: './bootstrap.component.css',
+    imports: [CommonModule, FormsModule, NgxPaginationModule]
 })
 export class BootstrapComponent {
   ngOnInit(): void {
@@ -156,7 +156,14 @@ Action_Create($event:any){
 Action_Edit($event:any){
   console.log('Edit')
 }
-Action_Delete($event:any){
-  console.log('Delete')
-}
+Action_Delete(row:I_ColumnDef){
+
+    
+    const index = this.gridData.indexOf(row);
+    if (index !== -1) {
+      this.gridData.splice(index, 1);
+      localStorage.setItem('localdata', JSON.stringify(this.gridData));
+      console.log('Single data deleted :', row);
+    }
+  }
 }

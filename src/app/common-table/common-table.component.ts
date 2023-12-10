@@ -2,15 +2,16 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { IActionDef, I_ColumnDef, I_Data, IsHideButton } from '../Column-Def/IColumnDef';
+import { IActionDef, I_ColumnDef, IsHideButton } from '../Column-Def/IColumnDef';
 import { E_ActionType, E_SelectMode, E_datatype } from '../Enum/enum';
 import { AppService } from '../app.service';
+import { BulkViewComponent } from "../bulk-view/bulk-view.component";
 @Component({
-  selector: 'app-common-table',
-  standalone: true,
-  imports: [CommonModule , NgxPaginationModule , FormsModule , ReactiveFormsModule],
-  templateUrl: './common-table.component.html',
-  styleUrl: './common-table.component.css'
+    selector: 'app-common-table',
+    standalone: true,
+    templateUrl: './common-table.component.html',
+    styleUrl: './common-table.component.css',
+    imports: [CommonModule, NgxPaginationModule, FormsModule, ReactiveFormsModule, BulkViewComponent]
 })
 export class CommonTableComponent {
   data: FormGroup;
@@ -25,23 +26,7 @@ export class CommonTableComponent {
     this.data = new FormGroup({
       Field: new FormControl(''),
     });
-
     
-  
-    const OldData = this.appService.getItem('OldData');
-    const localdata = this.appService.getItem('localdata');
-
-    if (OldData !== null && localdata !== null) {
-      if (OldData === localdata) {
-        alert('same value')
-      } else {
-        alert('Different Value')
-      }
-    // } else if (OldData === null && localdata === null) {
-    //   alert('Both items are not present in local storage.');
-    // } else {
-    //   alert('One of the items is not present in local storage.');
-    }
    }
 
 
@@ -214,107 +199,8 @@ getCheckboxChecked(event?: any, index?: number) { debugger
 BulkEdit() {debugger
   
   this.isBulkEdit = !this.isBulkEdit;
- 
-    if(this.isBulkEdit) {
-      const lastIndex = this.gridData[this.gridData.length - 1];
-      if (lastIndex && lastIndex.EntityTypeId == '') {
-        alert("no value")
-      } else {
-      let model: I_Data = Object.assign({});
-      model.EntityTypeId='';
-      this.gridData.push(model);
-      }
-
-      
   }
 
-  }
-
-  onSubmit() { debugger
-    const lastIndex =this.gridData[this.gridData.length - 1];
-
-    if (lastIndex && lastIndex.EntityTypeId == '') {
-      alert('no value is to submit')
-    } else {
-      if(!this.BulkEditData){
-      
-        let lastobject=this.gridData[this.gridData.length - 1];
-        if (lastobject && lastobject.EntityTypeId !== ''){
-          let model: I_Data = Object.assign({});
-          model.EntityTypeId='';
-          this.gridData.push(model);
-      }
-    }
-    if(this.BulkEditData){
-      this.bulkview();
-      let model: I_Data = Object.assign({});
-      model.EntityTypeId='';
-            this.gridData.push(model);
-            const listdatas = this.gridData;
-            this.appService.saveGridData(listdatas);
-    }
-    const localdatas = this.data.value;
-    this.appService.saveGridData(localdatas);
-    this.data.reset();
-
-
-    }
-    }
-  BulkEditData:any="";
-
-
-bulkview(){
-  this.BulkEditData=!this.BulkEditData
-  debugger
-  this.BulkEditData = "";
-  for (let index = 1; index <= this.gridData.length; index++) {
-    let _row = this.gridData[index-1];
-    // let line = _row.Field + ":";
-    let line ="";
-    for (let j = 0; j <  this.columnDefs.length; j++) {
-      line=line+ _row[this.columnDefs[j].Field]+  ":";
-    }
-    line.substring(0,1);
-         
-    if (this.gridData.length > index)
-      this.BulkEditData += line + "\n";
-    else
-      this.BulkEditData += line
-  }
-
-
-  
-  console.log('BulkEditData:', this.BulkEditData);
-}
-gridDataarray:any;
-changeBulkEditData($event: any) {
-  debugger;
-  let gridDataarray = this.BulkEditData.split(/\n/);
-  this.gridData = [];
-
-  for (let entry of gridDataarray) {
-    let [ entitytypeid ,caseid ,agentname ,createtimedate ] = entry.split(":");
-    let temp: I_Data = {
-      EntityTypeId: entitytypeid ,
-      CaseId: caseid ,
-      AgentName:agentname ,
-      CreatedDatetime:createtimedate,
-      
-    };
-     this.gridData.push(temp);
-
-  }
-
-}
-
-Inputchange($event:any){
-  let lastobject=this.gridData[this.gridData.length - 1];
-  if (lastobject && lastobject.EntityTypeId !== ''){
-    let model: I_Data = Object.assign({});
-    model.EntityTypeId='';
-    this.gridData.push(model);
-}
-  }
   deleteAdata(row:I_ColumnDef) {debugger
     
     const index = this.gridData.indexOf(row);

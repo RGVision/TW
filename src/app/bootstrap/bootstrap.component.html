@@ -65,16 +65,16 @@
                     </td>
                 }
                 <td class="border border-slate-400 p-2 text-center  hover:bg-slate-200">
-                  @if (IsHidden.Create==false) {
+                  <!-- @if (IsHidden.Create==false) {
                       <span class="px-1 cursor-pointer" (click)="Action_Create($event)"><i class="fa fa-plus-square"></i></span>
                   }@else if (IsHidden.Create==true) {}
               @if (IsHidden.Edit==false) {
                   <span class="px-1 cursor-pointer" (click)="Action_Edit($event)"><i class="fa fa-edit"></i></span>
-              }@else if (IsHidden.Edit==true) {}
+              }@else if (IsHidden.Edit==true) {} -->
               
 
               @if (IsHidden.Delete==false) {
-                  <span class="px-1 cursor-pointer" (click)="Action_Delete($event)"><i class="fa fa-trash-o"></i></span>
+                  <span class="px-1 cursor-pointer" (click)="Action_Delete(row)"><i class="fa fa-trash-o"></i></span>
               }@else if (IsHidden.Delete==true) {}
 
               </td>
@@ -95,4 +95,3 @@
         </label>
       </div>
   </div>
-  

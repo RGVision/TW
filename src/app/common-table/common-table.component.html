@@ -9,6 +9,21 @@
     }@else {
       <button class="ml-2 items-center justify-center rounded-md px-2 py-1 mb-2 font-medium text-white bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 " (click)="toggleFilter()">{{buttonName}}</button>
 
+        @for (col of columnDefs; track $index) {
+          @if (col.DataType=='Date') {
+            <app-date (datepicker)="datepicker"(dateSelected)="onDateSelected($event)"></app-date>
+<!-- 
+                <label>Date And Time Format:
+                <select [(ngModel)]="datepicker"  class="border border-gray-500 rounded">
+                  <option value="fullDate">fullDate</option>
+                  <option value="MMM dd, yyyy 'at' hh:mm a">full Date with Time</option>
+                  <option value="shortTime">Short Time</option>
+                </select>
+              </label> -->
+          }
+        }
+      
+
     <table class="border-collapse border border-slate-500 bg-slate-50">
       <caption class="caption-top">Caption: Table View</caption>
       <thead >
@@ -67,7 +82,7 @@
                     <td class="border border-slate-400 p-2 text-center  hover:bg-slate-200">
                         
                         @if (col.DataType=="Date") {
-                            {{row[col.Field] |date}}
+                            {{row[col.Field] |date:selectedDateFormat }}
                             
                         }
                         
@@ -80,7 +95,9 @@
                 <td class="border border-slate-400 p-2 text-center  hover:bg-slate-200">
                   
                 
-                <span class="px-1 cursor-pointer" (click)="deleteAdata(row)"><i class="fa fa-trash-o"></i></span>
+                <span class="px-1 cursor-pointer">
+                  <app-delete [nowDelete]="false"   [gridData]="row" (deleteMethod)="deleteAdata($event.data)"></app-delete>
+                </span>
                 
 
                 </td>
@@ -103,6 +120,5 @@
         </select>
       </label>
     </div>
-
     }
 </div>

@@ -1,0 +1,14 @@
+<div  style="display: inline-block;" [ngClass]="commonClass">
+    @if (!nowDelete) {
+        <span  (click)="checkDelete()" [ngClass]="deleteClass" class="delete-action delete-trash" style="cursor: pointer;">
+            <i class="fa fa-trash-o" ></i>
+          </span>
+    }
+    @if (nowDelete) {
+        <span  class="expandicons">
+            <i class="fa fa-close text-base text-white px-1 mr-1 bg-red-600" [ngClass]="cancelClass" (click)="nowDelete=false"></i>
+            <i class="fa fa-check text-base  text-white px-1 bg-green-600 " [ngClass]="successClass" (click)="_deleteMethod()"></i>
+        </span>
+    }
+
+</div>

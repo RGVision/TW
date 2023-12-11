@@ -2,14 +2,16 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
+import Swal from 'sweetalert2';
+import { DeleteComponent } from "../Add-on Components/delete/delete.component";
 import { IActionDef, I_ColumnDef, IsHideButton, } from '../Column-Def/IColumnDef';
 import { E_ActionType, E_SelectMode, E_datatype } from '../Enum/enum';
 @Component({
-  selector: 'app-common-list',
-  standalone: true,
-  imports: [CommonModule ,NgxPaginationModule , FormsModule],
-  templateUrl: './common-list.component.html',
-  styleUrl: './common-list.component.scss'
+    selector: 'app-common-list',
+    standalone: true,
+    templateUrl: './common-list.component.html',
+    styleUrl: './common-list.component.scss',
+    imports: [CommonModule, NgxPaginationModule, FormsModule, DeleteComponent]
 })
 export class CommonListComponent implements OnInit{
 
@@ -53,13 +55,23 @@ datatype:E_datatype = E_datatype.list;
   }
 
   Action_Delete(row:I_ColumnDef){
-    this.isDelete = this.IsHidden.Delete;
-    const index = this.gridData.indexOf(row);
-    if (index !== -1) {
-      this.gridData.splice(index, 1);
-      localStorage.setItem('localdata', JSON.stringify(this.gridData));
-      console.log('Single data deleted :', row);
-    }
+    Swal.fire({
+      title: 'Are you sure to delete?',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      cancelButtonText: 'Cancel',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.value) {
+        const index = this.gridData.indexOf(row);
+        if (index !== -1) {
+          this.gridData.splice(index, 1);
+          localStorage.setItem('localdata', JSON.stringify(this.gridData));
+          console.log('Single data deleted :', row);
+        }
+      }
+    })
   }
   removeCreateDelete(){
     this.IsHidden.Create=true;

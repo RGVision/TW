@@ -2,6 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
+import Swal from 'sweetalert2';
+import { DateComponent } from "../Add-on Components/date/date.component";
+import { DeleteComponent } from "../Add-on Components/delete/delete.component";
 import { IActionDef, I_ColumnDef, IsHideButton } from '../Column-Def/IColumnDef';
 import { E_ActionType, E_SelectMode, E_datatype } from '../Enum/enum';
 import { AppService } from '../app.service';
@@ -11,9 +14,10 @@ import { BulkViewComponent } from "../bulk-view/bulk-view.component";
     standalone: true,
     templateUrl: './common-table.component.html',
     styleUrl: './common-table.component.css',
-    imports: [CommonModule, NgxPaginationModule, FormsModule, ReactiveFormsModule, BulkViewComponent]
+    imports: [CommonModule, NgxPaginationModule, FormsModule, ReactiveFormsModule, BulkViewComponent, DeleteComponent, DateComponent]
 })
 export class CommonTableComponent {
+
   data: FormGroup;
   datas: I_ColumnDef[] = [];
 
@@ -64,7 +68,9 @@ export class CommonTableComponent {
   buttonName ='Open Filter';
   tempFiltergridData:any[]=[];
   itemsPerPages=5;
-
+  @Input()datepicker: any ;
+  selectedDateFormat!: string;
+  
   getsorting(headers:any){ debugger
     console.log("before",this.gridData)
   this.gridData = this.gridData.sort((a, b) => { debugger
@@ -203,12 +209,26 @@ BulkEdit() {debugger
 
   deleteAdata(row:I_ColumnDef) {debugger
     
-    const index = this.gridData.indexOf(row);
-    if (index !== -1) {
-      this.gridData.splice(index, 1);
-      localStorage.setItem('localdata', JSON.stringify(this.gridData));
-      console.log('Single data deleted :', row);
-    }
+    Swal.fire({
+      title: 'Are you sure to delete?',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      cancelButtonText: 'Cancel',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.value) {
+        const index = this.gridData.indexOf(row);
+        if (index !== -1) {
+          this.gridData.splice(index, 1);
+          localStorage.setItem('localdata', JSON.stringify(this.gridData));
+          console.log('Single data deleted :', row);
+        }
+      }
+    })
   }
-}
 
+  onDateSelected(format: string) {
+    this.selectedDateFormat = format;
+}
+}

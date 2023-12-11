@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
+import Swal from 'sweetalert2';
+import { DeleteComponent } from "../Add-on Components/delete/delete.component";
 import { I_ColumnDef, IsHideButton } from '../Column-Def/IColumnDef';
 import { E_datatype } from '../Enum/enum';
 @Component({
@@ -9,7 +11,7 @@ import { E_datatype } from '../Enum/enum';
     standalone: true,
     templateUrl: './bootstrap.component.html',
     styleUrl: './bootstrap.component.css',
-    imports: [CommonModule, FormsModule, NgxPaginationModule]
+    imports: [CommonModule, FormsModule, NgxPaginationModule, DeleteComponent]
 })
 export class BootstrapComponent {
   ngOnInit(): void {
@@ -157,13 +159,22 @@ Action_Edit($event:any){
   console.log('Edit')
 }
 Action_Delete(row:I_ColumnDef){
-
-    
-    const index = this.gridData.indexOf(row);
-    if (index !== -1) {
-      this.gridData.splice(index, 1);
-      localStorage.setItem('localdata', JSON.stringify(this.gridData));
-      console.log('Single data deleted :', row);
+  Swal.fire({
+    title: 'Are you sure to delete?',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    cancelButtonText: 'Cancel',
+    confirmButtonText: 'Yes, delete it!',
+  }).then((result) => {
+    if (result.value) {
+      const index = this.gridData.indexOf(row);
+      if (index !== -1) {
+        this.gridData.splice(index, 1);
+        localStorage.setItem('localdata', JSON.stringify(this.gridData));
+        console.log('Single data deleted :', row);
+      }
     }
+  })
   }
 }

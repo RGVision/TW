@@ -2,16 +2,19 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
+import Swal from 'sweetalert2';
+import { DateComponent } from "../Add-on Components/date/date.component";
+import { DeleteComponent } from "../Add-on Components/delete/delete.component";
 import { IActionDef, I_ColumnDef, I_Data, IsHideButton } from '../Column-Def/IColumnDef';
 import { E_ActionType, E_SelectMode, E_datatype } from '../Enum/enum';
 import { AppService } from '../app.service';
 
 @Component({
-  selector: 'app-bulk-view',
-  standalone: true,
-  imports: [CommonModule , NgxPaginationModule , FormsModule , ReactiveFormsModule],
-  templateUrl: './bulk-view.component.html',
-  styleUrl: './bulk-view.component.css'
+    selector: 'app-bulk-view',
+    standalone: true,
+    templateUrl: './bulk-view.component.html',
+    styleUrl: './bulk-view.component.css',
+    imports: [CommonModule, NgxPaginationModule, FormsModule, ReactiveFormsModule, DeleteComponent, DateComponent]
 })
 export class BulkViewComponent {
   data: FormGroup;
@@ -86,6 +89,9 @@ export class BulkViewComponent {
   buttonName ='Open Filter';
   tempFiltergridData:any[]=[];
   itemsPerPages=5;
+  isdeletec=false;
+  @Input()datepicker: any ;
+  selectedDateFormat!: string;
   
   getsorting(headers:any){ debugger
     console.log("before",this.gridData)
@@ -200,24 +206,7 @@ getCheckboxChecked(event?: any, index?: number) { debugger
     });
   }
 
-  // BulkEdit() {debugger
-  
-  //   this.isBulkEdit = !this.isBulkEdit;
-   
-  //     if(this.isBulkEdit) {
-  //       const lastIndex = this.gridData[this.gridData.length - 1];
-  //       if (lastIndex && lastIndex.EntityTypeId == '') {
-  //         alert("no value")
-  //       } else {
-  //       let model: I_Data = Object.assign({});
-  //       model.EntityTypeId='';
-  //       this.gridData.push(model);
-  //       }
-  
-        
-  //   }
-  
-  //   }
+
 
   onSubmit() { debugger
     const lastIndex =this.gridData[this.gridData.length - 1];
@@ -293,21 +282,34 @@ changeBulkEditData($event: any) {
 
 Inputchange($event:any){
   let lastobject=this.gridData[this.gridData.length - 1];
-  if (lastobject && lastobject.EntityTypeId  !== ''){
+  if (lastobject && lastobject.EntityTypeId !== ''){
     let model: I_Data = Object.assign({});
     model.EntityTypeId='';
     this.gridData.push(model);
 }
   }
+
   deleteAdata(row:I_ColumnDef) {debugger
+      Swal.fire({
+        title: 'Are you sure to delete?',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'Cancel',
+        confirmButtonText: 'Yes, delete it!',
+      }).then((result) => {
+        if (result.value) {
+          const index = this.gridData.indexOf(row);
+          if (index !== -1) {
+            this.gridData.splice(index, 1);
+            localStorage.setItem('localdata', JSON.stringify(this.gridData));
+            console.log('Single data deleted :', row);
+          }
+        }
+      })
     
-    const index = this.gridData.indexOf(row);
-    if (index !== -1) {
-      this.gridData.splice(index, 1);
-      localStorage.setItem('localdata', JSON.stringify(this.gridData));
-      console.log('Single data deleted :', row);
-    }
-  }
 }
-
-
+onDateSelected(format: string) {
+  this.selectedDateFormat = format;
+}
+}

@@ -74,7 +74,9 @@
               
 
               @if (IsHidden.Delete==false) {
-                  <span class="px-1 cursor-pointer" (click)="Action_Delete(row)"><i class="fa fa-trash-o"></i></span>
+                  <span class="px-1 cursor-pointer">
+                    <app-delete [nowDelete]="false"   [gridData]="row" (deleteMethod)="Action_Delete($event.data)"></app-delete>
+                  </span>
               }@else if (IsHidden.Delete==true) {}
 
               </td>

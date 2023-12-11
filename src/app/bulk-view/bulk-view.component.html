@@ -3,8 +3,20 @@
 <!-- <button class="ml-2 rounded-md  bg-red-600 hover:bg-red-800 px-1 py-1 text-white transition ease-in-out delay-75 hover:-translate-y-1 hover:scale-110 duration-150" (click)="removeCreateEdit()">Remove</button> -->
 <!-- <button class="ml-2 rounded-md  bg-emerald-600 hover:bg-emerald-800 px-1 py-1 text-white transition ease-in-out delay-75 hover:-translate-y-1 hover:scale-110 duration-150" (click)="BulkEdit()">Bulk Edit</button> -->
   <button class=" ml-2 bg-blue-500  rounded-md hover:bg-blue-800 px-2 py-1 font-medium text-white transition ease-in-out delay-75 hover:-translate-y-1 hover:scale-110 duration-150" (click)="onSubmit()">Save</button>
-  
   <button class=" ml-2 bg-orange-500  rounded-md hover:bg-orange-800 px-2 py-1 font-medium text-black transition ease-in-out delay-75 hover:-translate-y-1 hover:scale-110 duration-150" type="button" data-bs-toggle="modal" data-bs-target="#myModal" (click)="bulkview()" >List</button>
+  @for (col of columnDefs; track $index) {
+    @if (col.DataType=='Date') {
+      <app-date (datepicker)="datepicker"(dateSelected)="onDateSelected($event)"></app-date>
+      
+          <!-- <label>Date And Time Format:
+          <select [(ngModel)]="datepicker"  class="border border-gray-500 rounded">
+            <option value="fullDate">fullDate</option>
+            <option value="MMM dd, yyyy 'at' hh:mm a">full Date with Time</option>
+            <option value="shortTime">Short Time</option>
+          </select>
+        </label> -->
+    }
+  }
 <table  class="border-collapse border border-slate-500 bg-slate-50">
   <caption class="caption-top">Caption: Table View</caption>
   <thead>
@@ -59,10 +71,12 @@
         </td>
           @for (col of columnDefs ; track $index) {
               <td class="border border-slate-400 p-2 text-center  hover:bg-slate-200">
-
+                @if (col.DataType=="Date") {
+                  <input  type="text"  class="form-control" name="Field" [ngModel]="row[col.Field]|date:selectedDateFormat" [ngModelOptions]="{standalone:true}" (keyup)="Inputchange($event)" />
+                }@else {
                   <input  type="text"  class="form-control" name="Field" [(ngModel)]="row[col.Field]" [ngModelOptions]="{standalone:true}" (keyup)="Inputchange($event)" />
-                
-                  
+
+                }
               </td>
              
           }
@@ -70,9 +84,9 @@
              
 
           
-              <span class="px-1 cursor-pointer" (click)="deleteAdata(row)"><i class="fa fa-trash-o"></i></span>
-         
-
+              <span class="px-1 cursor-pointer" >
+              <app-delete [nowDelete]="false"   [gridData]="row" (deleteMethod)="deleteAdata($event.data)"></app-delete>
+            </span>
           </td>
       </tr>
     }

@@ -112,7 +112,7 @@
   <div>
       <pagination-controls (pageChange)="pagechange($event)"></pagination-controls>
       <label id="page-selection">Items per page:
-        <select [(ngModel)]="itemsPerPages"  class="border border-gray-500 rounded">
+        <select [(ngModel)]="itemsPerPages" (change)="itemsPerPageChanged()"  class="border border-gray-500 rounded">
           <option value="5">5</option>
           <option value="10">10</option>
           <option value="15">15</option>

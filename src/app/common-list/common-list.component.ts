@@ -4,8 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
 import Swal from 'sweetalert2';
 import { DeleteComponent } from "../Add-on Components/delete/delete.component";
-import { IActionDef, I_ColumnDef, IsHideButton, } from '../Column-Def/IColumnDef';
 import { E_ActionType, E_SelectMode, E_datatype } from '../Enum/enum';
+import { IActionDef, I_ColumnDef, IsHideButton, } from '../common-interface/common-interface';
 @Component({
     selector: 'app-common-list',
     standalone: true,

@@ -1,0 +1,4 @@
+@for (col of columnDefs ; track $index) {
+<input type="text" id="textc"  class="form-control inline-block ml-5 mt-2 w-auto" [placeholder]="col.Field"  [(ngModel)]="CreateObj[col.Field]" 
+[ngModelOptions]="{standalone:true}" name="Field" (keyup)="InputChangesO($event)" >
+}

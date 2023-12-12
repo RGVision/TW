@@ -10,12 +10,20 @@
                       <img src="../../assets/images/Treetog-Junior-Camera.48.png">
                       <span class="card-body" id="span-ca">
                     @for (col of columnDefs ; track $index) {
-                      
+                      @if (col.DataType=="Date") {
+                        <div class="card-text">
+                          <div class="px-3 flex">
+                            {{row[col.Field]|date}}
+                          </div>
+                        </div>
+                      }@else {
                         <div class="card-text">
                           <div class="px-3 flex">
                             {{row[col.Field]}}
                           </div>
                         </div>
+                      }
+                        
                         
                       
                     }

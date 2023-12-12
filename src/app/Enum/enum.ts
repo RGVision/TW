@@ -16,3 +16,14 @@ export enum E_SelectMode {
     Single = 2,
     Multi = 3,
 }
+export enum E_textbox{
+    text = 1,
+    number = 2,
+    textarea = 3,
+    file = 4,
+    checkbox = 5,
+    submit = 6,
+    url = 7,
+    search = 8,
+    email = 9,
+}

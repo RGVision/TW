@@ -72,9 +72,9 @@
           @for (col of columnDefs ; track $index) {
               <td class="border border-slate-400 p-2 text-center  hover:bg-slate-200">
                 @if (col.DataType=="Date") {
-                  <input  type="text"  class="form-control" name="Field" [ngModel]="row[col.Field]|date:selectedDateFormat" [ngModelOptions]="{standalone:true}" (keyup)="Inputchange($event)" />
+                  <input  type="text"  class="form-control" name="Field" [ngModel]="row[col.Field]|date:selectedDateFormat" [ngModelOptions]="{standalone:true}"/>
                 }@else {
-                  <input  type="text"  class="form-control" name="Field" [(ngModel)]="row[col.Field]" [ngModelOptions]="{standalone:true}" (keyup)="Inputchange($event)" />
+                  <input  type="text"  class="form-control" name="Field" [(ngModel)]="row[col.Field]" [ngModelOptions]="{standalone:true}"  />
 
                 }
               </td>
@@ -89,14 +89,28 @@
             </span>
           </td>
       </tr>
+      
     }
+    
+    <th></th>
+    @for (col of columnDefs ; track $index) {
+      
+      <td>
+        <input  type="text"  class="form-control" [placeholder]="col.Field"  [(ngModel)]="CreateObj[col.Field]" [ngModelOptions]="{standalone:true}" name="Field"(keyup)="InputChangesO($event)" />
+      </td>
+      
+      
+    }
+  
   </tbody>
+
 </table>
+<!-- <app-textbox [columnDefs]="columnDefs" [gridData]="CreateObj"  (inputaddtabledata)="InputChangesO($event)"></app-textbox> -->
 
         <div>
             <pagination-controls (pageChange)="pagechange($event)"></pagination-controls>
             <label id="page-selection">Items per page:
-              <select [(ngModel)]="itemsPerPages" class="border border-gray-500 rounded">
+              <select [(ngModel)]="itemsPerPages" (change)="itemsPerPageChanged()" class="border border-gray-500 rounded">
                 <option value="5">5</option>
                 <option value="10">10</option>
                 <option value="15">15</option>

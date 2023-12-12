@@ -5,16 +5,17 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import Swal from 'sweetalert2';
 import { DateComponent } from "../Add-on Components/date/date.component";
 import { DeleteComponent } from "../Add-on Components/delete/delete.component";
-import { IActionDef, I_ColumnDef, I_Data, IsHideButton } from '../Column-Def/IColumnDef';
+import { TextboxComponent } from "../Add-on Components/textbox/textbox.component";
 import { E_ActionType, E_SelectMode, E_datatype } from '../Enum/enum';
 import { AppService } from '../app.service';
+import { IActionDef, I_ColumnDef, I_Data, IsHideButton } from '../common-interface/common-interface';
 
 @Component({
     selector: 'app-bulk-view',
     standalone: true,
     templateUrl: './bulk-view.component.html',
     styleUrl: './bulk-view.component.css',
-    imports: [CommonModule, NgxPaginationModule, FormsModule, ReactiveFormsModule, DeleteComponent, DateComponent]
+    imports: [CommonModule, NgxPaginationModule, FormsModule, ReactiveFormsModule, DeleteComponent, DateComponent, TextboxComponent]
 })
 export class BulkViewComponent {
   data: FormGroup;
@@ -29,20 +30,20 @@ export class BulkViewComponent {
 
     
   
-    const OldData = this.appService.getItem('OldData');
-    const localdata = this.appService.getItem('localdata');
+    // const OldData = this.appService.getItem('OldData');
+    // const localdata = this.appService.getItem('localdata');
 
-    if (OldData !== null && localdata !== null) {
-      if (OldData === localdata) {
-        alert('same value')
-      } else {
-        alert('Different Value')
-      }
+    // if (OldData !== null && localdata !== null) {
+    //   if (OldData === localdata) {
+    //     alert('same value')
+    //   } else {
+    //     alert('Different Value')
+    //   }
     // } else if (OldData === null && localdata === null) {
     //   alert('Both items are not present in local storage.');
     // } else {
     //   alert('One of the items is not present in local storage.');
-    }
+    // }
    }
 
 
@@ -54,15 +55,6 @@ export class BulkViewComponent {
     const localdatas = this.data.value;
     this.appService.saveGridData(localdatas);
    this.data.reset();
-    
-   const lastIndex = this.gridData[this.gridData.length - 1];
-   if (lastIndex && lastIndex.EntityTypeId == '') {
-     alert("no value")
-   } else {
-   let model: I_Data = Object.assign({});
-   model.EntityTypeId='';
-   this.gridData.push(model);
-   }
 
   }
 
@@ -80,6 +72,7 @@ export class BulkViewComponent {
   @Output() getGridCheckedData = new EventEmitter<{ gridData: any }>();
   tempGridData:any[]=[];
   GridFilter: any = {};
+  CreateObj: any = {};
   isCreate = true;
   isDelete = true;
   isEdit = true;
@@ -108,6 +101,12 @@ console.log("after",this.gridData)
   page :any;
   pagechange(data:any){ debugger
     this.page = data;
+    if (this.page !== data) {
+      this.page = data;
+    }
+  }
+  itemsPerPageChanged(): void {
+    this.page = 1; // Reset current page to 1
   }
 
   getsearchfilter($event:any) { debugger
@@ -209,34 +208,11 @@ getCheckboxChecked(event?: any, index?: number) { debugger
 
 
   onSubmit() { debugger
-    const lastIndex =this.gridData[this.gridData.length - 1];
-
-    if (lastIndex && lastIndex.EntityTypeId == '') {
-      alert('no value is to submit')
-    } else {
-      if(!this.BulkEditData){
-      
-        let lastobject=this.gridData[this.gridData.length - 1];
-        if (lastobject && lastobject.EntityTypeId !== ''){
-          let model: I_Data = Object.assign({});
-          model.EntityTypeId='';
-          this.gridData.push(model);
-      }
-    }
-    if(this.BulkEditData){
-      this.bulkview();
-      let model: I_Data = Object.assign({});
-      model.EntityTypeId='';
-            this.gridData.push(model);
-            const listdatas = this.gridData;
-            this.appService.saveGridData(listdatas);
-    }
     const localdatas = this.data.value;
     this.appService.saveGridData(localdatas);
     this.data.reset();
+    // const lastIndex =this.gridData[this.gridData.length - 1];
 
-
-    }
     }
     BulkEditData:any="";
     bulkview(){
@@ -280,14 +256,33 @@ changeBulkEditData($event: any) {
 
 }
 
-Inputchange($event:any){
-  let lastobject=this.gridData[this.gridData.length - 1];
-  if (lastobject && lastobject.EntityTypeId !== ''){
-    let model: I_Data = Object.assign({});
-    model.EntityTypeId='';
-    this.gridData.push(model);
-}
+// Inputchange($event:any){
+
+//   let lastobject=this.gridData[this.gridData.length - 1];
+//   if (lastobject && lastobject.EntityTypeId !== ''){
+//     let model: I_Data = Object.assign({});
+//     model.EntityTypeId='';
+//     this.gridData.push(model);
+// }
+
+//   }
+
+
+InputChangesO($event: any) {
+  debugger;
+console.log('before',this.CreateObj)
+  if (this.CreateObj !== "" ) {
+  
+    this.gridData.push(this.CreateObj);
+    this.CreateObj={};
+    const localdatas = this.data.value;
+    this.appService.saveGridData(localdatas);
+    this.data.reset();
   }
+  console.log('after',this.CreateObj)
+
+
+}
 
   deleteAdata(row:I_ColumnDef) {debugger
       Swal.fire({

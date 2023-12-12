@@ -9,9 +9,16 @@
                 @for (row of gridData |  paginate: { itemsPerPage: itemsPerPages, currentPage: page }; track $index) {
                   <div class="row-container mx-1 py-3 shadow-md rounded ">
                     @for (col of columnDefs ; track $index) {
-                      <span id="span-li" class="px-7 text-base">
+                      @if (col.DataType=="Date") {
+                        <span id="span-li" class="px-7 text-base">
+                          {{row[col.Field]|date}}
+                      </span>
+                      }@else {
+                        <span id="span-li" class="px-7 text-base">
                           {{row[col.Field]}}
                       </span>
+                      }
+                      
                     }
                     <span class="p-2 float-right">
                       @if (IsHidden.Create==false) {

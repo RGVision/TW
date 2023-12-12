@@ -5,10 +5,10 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import Swal from 'sweetalert2';
 import { DateComponent } from "../Add-on Components/date/date.component";
 import { DeleteComponent } from "../Add-on Components/delete/delete.component";
-import { IActionDef, I_ColumnDef, IsHideButton } from '../Column-Def/IColumnDef';
 import { E_ActionType, E_SelectMode, E_datatype } from '../Enum/enum';
 import { AppService } from '../app.service';
 import { BulkViewComponent } from "../bulk-view/bulk-view.component";
+import { IActionDef, I_ColumnDef, IsHideButton } from '../common-interface/common-interface';
 @Component({
     selector: 'app-common-table',
     standalone: true,
@@ -87,8 +87,14 @@ console.log("after",this.gridData)
   page :any;
   pagechange(data:any){ debugger
     this.page = data;
+    if (this.page !== data) {
+      this.page = data;
+    }
   }
-
+  itemsPerPageChanged(): void {
+    this.page = 1; // Reset current page to 1
+  }
+  
   getsearchfilter($event:any) { debugger
     this.tempFiltergridData =  this.tempGridData;
     for (let key in this.GridFilter) {

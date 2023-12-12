@@ -4,8 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
 import Swal from 'sweetalert2';
 import { DeleteComponent } from "../Add-on Components/delete/delete.component";
-import { I_ColumnDef, IsHideButton } from '../Column-Def/IColumnDef';
 import { E_datatype } from '../Enum/enum';
+import { I_ColumnDef, IsHideButton } from '../common-interface/common-interface';
 @Component({
     selector: 'app-bootstrap',
     standalone: true,

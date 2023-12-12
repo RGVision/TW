@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { I_ColumnDef } from '../Column-Def/IColumnDef';
 import { E_datatype } from '../Enum/enum';
 import { BootstrapComponent } from "../bootstrap/bootstrap.component";
 import { CommonCardComponent } from "../common-card/common-card.component";
+import { I_ColumnDef } from '../common-interface/common-interface';
 import { CommonListComponent } from "../common-list/common-list.component";
 import { CommonTableComponent } from "../common-table/common-table.component";
 import { CommongridData } from '../grid-data/grid-data';
